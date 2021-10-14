@@ -1,7 +1,7 @@
-class canape {
-  constructor() {
+class Canape {
+  constructor(colors, id, name, price, imageUrl, description, altTxt) {
     this.colors = colors;
-    this._id = id;
+    this.id = id;
     this.name = name;
     this.price = price;
     this.imageUrl = imageUrl;
@@ -9,23 +9,36 @@ class canape {
     this.altTxt = altTxt;
   }
 }
-const retrieveData = () => fetch("http://localhost:3000/api/products")
-.then(function (res) {
-  if (res.ok) {
-    return (res.json())
-  }
-})
-.then(getProduct (value) {
-  document.getElementById("items").innertext = listOfProducts
-})
-.catch(function (err) {
-  console.log("Une erreur est survenue")
-});
+fetch('http://localhost:3000/api/products')
+  .then(function (response) {
+    return response.json();
+  })
+  .then(function (data) {
+    displayProduct(data);
+  })
+  .catch(function (error) {
+    console.log('Une erreur est survenue.');
+  });
 
-function getProduct() {
-  let listOfProducts ="";
-    for(let i = 0; i < retrieveData.length; i++) {
-     listOfProducts = new canape();
-    }
-    
+function displayProduct(products) {
+  for (let i = 0; i < products.length; i++) {
+    let product = new Canape(
+      products[i].colors,
+      products[i]._id,
+      'tataaaaaa',
+      products[i].price,
+      products[i].imageUrl,
+      products[i].description,
+      products[i].altTxt
+    );
+    document.getElementById(
+      'items'
+    ).innerHTML += `<a href="./product.html?id=${product.id}">
+            <article>
+              <img src="${product.imageUrl}" alt="${product.altTxt}">
+              <h3 class="productName">${product.name}</h3>
+              <p class="productDescription">${product.description}</p>
+            </article>
+          </a>`;
+  }
 }
