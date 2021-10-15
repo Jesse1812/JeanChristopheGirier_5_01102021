@@ -1,3 +1,4 @@
+// Constructeur d'objet Canapé
 class Canape {
   constructor(colors, id, name, price, imageUrl, description, altTxt) {
     this.colors = colors;
@@ -9,6 +10,7 @@ class Canape {
     this.altTxt = altTxt;
   }
 }
+// Récupération des données par l'API
 fetch('http://localhost:3000/api/products')
   .then(function (response) {
     return response.json();
@@ -19,13 +21,13 @@ fetch('http://localhost:3000/api/products')
   .catch(function (error) {
     console.log('Une erreur est survenue.');
   });
-
+//Fonction de création et affichage des fiches canapé sur la page d'accueil
 function displayProduct(products) {
   for (let i = 0; i < products.length; i++) {
     let product = new Canape(
       products[i].colors,
       products[i]._id,
-      'tataaaaaa',
+      products[i].name,
       products[i].price,
       products[i].imageUrl,
       products[i].description,
