@@ -1,15 +1,3 @@
-// Constructeur d'objet Canapé
-class Canape {
-  constructor(colors, id, name, price, imageUrl, description, altTxt) {
-    this.colors = colors;
-    this.id = id;
-    this.name = name;
-    this.price = price;
-    this.imageUrl = imageUrl;
-    this.description = description;
-    this.altTxt = altTxt;
-  }
-}
 // Récupération de l'Id de chaque canapé
 const productId = getArticleId();
 function getArticleId() {
@@ -22,10 +10,10 @@ fetch(`http://localhost:3000/api/products/${productId}`)
   })
   .then(function (data) {
     console.log(data);
-    displayOneProduct();
+    displayOneProduct(data);
   })
   .catch(function (error) {
-    console.log('Une erreur est survenue.');
+    console.log('Une erreur est survenue.' + error);
   });
 //Fonction d'affichage d'un produit
 function displayOneProduct(products) {
@@ -38,7 +26,16 @@ function displayOneProduct(products) {
     products.description,
     products.altTxt
   );
-  document.querySelector(
-    '.item__img'
-  ).innerHTML = `<img src="${product.imageUrl}">`;
+  document.getElementsByClassName(
+    'item__img'
+  )[0].innerHTML = `<img src="${product.imageUrl}" <alt="${product.altTxt}">`;
+  document.getElementById(
+    'title'
+  ).innerHTML = `<h1 id="title">${product.name}</h1>`;
+  document.getElementById(
+    'price'
+  ).innerHTML = `<span id="price">${product.price}</span>`;
+  document.getElementById('description').innerHTML = `<p id="description">
+                  ${product.description}
+                </p>`;
 }
