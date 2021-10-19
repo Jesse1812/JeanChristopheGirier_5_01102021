@@ -38,4 +38,11 @@ function displayOneProduct(products) {
   document.getElementById('description').innerHTML = `<p id="description">
                   ${product.description}
                 </p>`;
+  // Choix couleurs
+  let value = product.colors;
+  for (let i = 0; i < product.colors.length; i++) {
+    document.querySelector('select').innerHTML += `
+    <option value="${value[i]}">${value[i]}</option>`;
+    console.log(value);
+  }
 }
