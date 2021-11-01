@@ -42,33 +42,51 @@ function displayOneProduct(products) {
   let ref = localStorage.setItem('id', productId);
   // Choix couleurs
   let value = product.colors;
+  let color = document.querySelector('select');
   for (let i = 0; i < product.colors.length; i++) {
-    let select = document.querySelector('select');
-    select.innerHTML += `
+    color.innerHTML += `
     <option value="${value[i]}">${value[i]}</option>`;
-    select.addEventListener('click', function (e) {
-      e.value = this.value;
-      let couleur = localStorage.setItem('color', this.value);
-    });
   }
+  color.addEventListener('change', function (e) {
+    e.value = this.value;
+    let couleur = localStorage.setItem('color', this.value);
+  });
+
   // Choix quantité
   let quantity = document.querySelector('input');
-  quantity.addEventListener('click', function (q) {
+  quantity.addEventListener('change', function (q) {
     q.value = this.value;
     let quantite = localStorage.setItem('quantity', this.value);
   });
 
-  const commande = document.getElementById('addToCart');
-  commande.addEventListener('click', function () {
-    let panier = [];
-    if (color && quantity) {
-      panier.push({
-        productId,
-        color,
-        quantity,
-      });
+  const shopping = document.getElementById('addToCart');
+  let panier = [];
+  shopping.addEventListener('click', function () {
+    panier.push({
+      productId,
+      color,
+      quantity,
+    });
+    if (
+      panier.productId === panier.productId['panier'] &&
+      panier.color === panier.color['panier']
+    ) {
+      panier.quantity++;
+      localStorage.setItem('panier', JSON.stringify(panier));
+    } else {
+      localStorage.setItem('panier', JSON.stringify(panier));
+      console.log(panier);
     }
-    localStorage.setItem('panier', JSON.stringify(panier));
-    console.log(panier);
   });
+  // Récupération du panier
+  let commande = JSON.parse(localStorage.getItem(panier));
+  console.log(commande);
+  if (commande) {
+    commande.push(panier);
+    localStorage.setItem('panier', JSON.stringify(commande));
+  } else {
+    commande = [];
+    commande.push(panier);
+    localStorage.setItem('panier', JSON.stringify(commande));
+  }
 }
