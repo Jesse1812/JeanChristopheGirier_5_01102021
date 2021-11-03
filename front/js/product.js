@@ -37,6 +37,7 @@ function displayOneProduct(products) {
   document.getElementById('description').innerHTML = `<p id="description">
                   ${product.description}
                 </p>`;
+
   // Affichage options couleurs
   let panier = [];
   let choixCouleur = '';
@@ -66,10 +67,10 @@ function displayOneProduct(products) {
         choixCouleur,
         choixQuantite,
       });
-      localStorage.setItem('commande', JSON.stringify('panier'));
+      localStorage.setItem('commande', JSON.stringify(panier));
     }
-    // Importation local Storage
-    let commande = JSON.parse(localStorage.getItem(panier));
+    // Importation methode 1
+    let commande = JSON.parse(localStorage.getItem('commande'));
     for (let i = 0; i < panier.length; i++) {
       if (
         panier[i].productId === panier[i].productId.localStorage &&
@@ -83,5 +84,14 @@ function displayOneProduct(products) {
         localStorage.setItem('commande', JSON.stringify(panier));
       }
     }
+    // Importation essaie methode 2
+    // let commande = JSON.parse(localStorage.getItem('commande'));
+    // console.log(commande);
+    // let parsedValueFromString = JSON.parse(commande);
+    // let panier = parsedValueFromString || [];
+    // console.log(panier);
+    // if (panier.indexOf(productId, choixCouleur) == -1) {
+    //   commande = panier.push;
+    // }
   });
 }
