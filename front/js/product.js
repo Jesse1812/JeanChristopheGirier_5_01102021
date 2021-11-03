@@ -66,19 +66,22 @@ function displayOneProduct(products) {
         choixCouleur,
         choixQuantite,
       });
-      localStorage.setItem('commande', JSON.stringify(panier));
+      localStorage.setItem('commande', JSON.stringify('panier'));
     }
     // Importation local Storage
     let commande = JSON.parse(localStorage.getItem(panier));
-    if (
-      commande.productId === panier.productId &&
-      commande.choixCouleur === panier.choixCouleur
-    ) {
-      commande++;
-      localStorage.setItem('panier', JSON.stringify(commande));
-    } else {
-      commande.push(panier);
-      localStorage.setItem('panier', JSON.stringify(commande));
+    for (let i = 0; i < panier.length; i++) {
+      if (
+        panier[i].productId === panier[i].productId.localStorage &&
+        panier[i].choixCouleur === panier[i].choixCouleur.localStorage
+      ) {
+        panier[i].choixQuantite =
+          panier[i].choixQuantite + panier[i].choixQuantite.localStorage;
+        localStorage.setItem('commande', JSON.stringify(panier));
+      } else {
+        // commande.push(panier);
+        localStorage.setItem('commande', JSON.stringify(panier));
+      }
     }
   });
 }
