@@ -9,7 +9,7 @@ const cart = document.getElementsById('cart__items')
 
 let commande = JSON.parse(localStorage.getItem('commande'));
 function getCommande() {
-  if (commande === null) {
+  if (commande === null || commande == 0) {
     cart.innnerHTML = "<h3>Votre panier est vide<h3>"
 } else {
   for(let paniers in commande) {
