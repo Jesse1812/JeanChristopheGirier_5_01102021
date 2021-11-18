@@ -70,42 +70,21 @@ function displayOneProduct(products) {
       panier.push(produit);
       localStorage.setItem('commande', JSON.stringify(panier));
     }
-    let commande = JSON.parse(localStorage.getItem('commande'));
-    console.log(commande);
-    for (let i = 0; i < commande.length - 1; i++) {
-      if (
-        commande[i].idProduit === commande[commande.length - 1].idProduit &&
-        commande[i].couleurProduit ===
-          commande[commande.length - 1].couleurProduit
-      ) {
-        parseInt(
-          (commande[commande.length - 1].quantiteProduit =
-            commande[i].quantiteProduit +
-            commande[commande.length - 1].quantiteProduit)
-        );
-        console.log(commande[commande.length - 1].quantiteProduit);
-      } else {
-        console.log('perdu');
-      }
-    }
-    // const resultFind = panier.find(
-    //   (e) => e.idProduit === productId && e.couleurProduit === choixCouleur
-    // );
-    // console.log(resultFind);
-    // //Si le produit commandé est déjà dans le panier
-    // if (resultFind) {
-    //   let newQuantite = parseInt(
-    //     panier.choixQuantite + resultFind.choixQuantite
-    //   );
-    //   console.log(newQuantite);
-    //   resultFind.choixQuantite = newQuantite;
-
-    //   localStorage.setItem('commande', JSON.stringify(panier));
-
-    //   //Si le produit commandé n'est pas dans le panier
-    // } else {
-    //   commande.push(panier);
-    //   localStorage.setItem('commande', JSON.stringify(panier));
+    // let commande = JSON.parse(localStorage.getItem('commande'));
+    // for (let i = 0; i < commande.length - 1; i++) {
+    //   if (
+    //     commande[i].idProduit === commande[commande.length - 1].idProduit &&
+    //     commande[i].couleurProduit ===
+    //       commande[commande.length - 1].couleurProduit
+    //   ) {
+    //     let commandeTotale =
+    //       parseInt(commande[0].quantiteProduit) +
+    //       parseInt(commande[commande.length - 1].quantiteProduit);
+    //     console.log(commande);
+    //     console.log(commandeTotale);
+    //   } else {
+    //     console.log('perdu');
+    //   }
     // }
   });
 }
