@@ -39,7 +39,10 @@ function displayOneProduct(products) {
                 </p>`;
 
   // Affichage options couleurs
-  let panier = [];
+  let panier = JSON.parse(localStorage.getItem('commande'));
+  if (!panier) {
+    panier = [];
+  }
   let choixCouleur = '';
   let choixQuantite = '';
   let value = product.colors;
@@ -66,25 +69,10 @@ function displayOneProduct(products) {
       couleurProduit: choixCouleur,
       quantiteProduit: choixQuantite,
     };
+    console.log('ajout produit');
     if (choixCouleur && choixQuantite) {
       panier.push(produit);
       localStorage.setItem('commande', JSON.stringify(panier));
     }
-    // let commande = JSON.parse(localStorage.getItem('commande'));
-    // for (let i = 0; i < commande.length - 1; i++) {
-    //   if (
-    //     commande[i].idProduit === commande[commande.length - 1].idProduit &&
-    //     commande[i].couleurProduit ===
-    //       commande[commande.length - 1].couleurProduit
-    //   ) {
-    //     let commandeTotale =
-    //       parseInt(commande[0].quantiteProduit) +
-    //       parseInt(commande[commande.length - 1].quantiteProduit);
-    //     console.log(commande);
-    //     console.log(commandeTotale);
-    //   } else {
-    //     console.log('perdu');
-    //   }
-    // }
   });
 }
