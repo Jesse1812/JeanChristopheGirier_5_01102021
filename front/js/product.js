@@ -71,8 +71,28 @@ function displayOneProduct(products) {
     };
     console.log('ajout produit');
     if (choixCouleur && choixQuantite) {
-      panier.push(produit);
+      panier = managePanier(panier, produit);
       localStorage.setItem('commande', JSON.stringify(panier));
-    }
+    } else alert('Veuillez choisir une couleur et une quantité');
   });
+}
+// Cette fonction  a pour but de renvoyer le panier avec le canape,
+// mais si le canape est deja présent elle va ajouter la quantité
+// panier correspond au panier total
+// canape correspond au produit choisit
+function managePanier(panier, canape) {
+  let index = panier.findIndex(function (data) {
+    return (
+      data.idProduit === canape.idProduit &&
+      data.couleurProduit === canape.couleurProduit
+    );
+  });
+  if (index !== -1) {
+    panier[index].quantiteProduit =
+      parseInt(panier[index].quantiteProduit) +
+      parseInt(canape.quantiteProduit);
+  } else {
+    panier.push(canape);
+  }
+  return panier;
 }

@@ -33,7 +33,9 @@ function displayProduct(products) {
     products.description,
     products.altTxt
   );
-  affichagePanier.innerHTML = `<article class="cart__item" data-id="${product.idProduit}">
+  let canapeCart = new CanapeCart(products.quantiteProduit, product);
+  console.log(canapeCart);
+  affichagePanier.innerHTML += `<article class="cart__item" data-id="${product.idProduit}">
                 <div class="cart__item__img">
                   <img src="${product.imageUrl}" alt="${product.altTxt}">
                 </div>
@@ -44,7 +46,7 @@ function displayProduct(products) {
                   </div>
                   <div class="cart__item__content__settings">
                     <div class="cart__item__content__settings__quantity">
-                      <p>Qté : ${products.quantiteProduit}</p>
+                      <p>Qté : ${canapeCart.quantite}</p>
                       <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="42">
                     </div>
                     <div class="cart__item__content__settings__delete">
@@ -53,15 +55,19 @@ function displayProduct(products) {
                   </div>
                 </div>
               </article>`;
-  // let quantiteTotale = 0;
-  // let commandeTotale = [];
-  // for (let i = 0; i < commande.length; i++) {
-  //   if (
-  //     commande[i].idProduit === commande[commande.length - 1].idProduit &&
-  //     commande[i].couleurProduit ===
-  //       commande[commande.length - 1].couleurProduit
-  //   ) {
-  //     quantiteTotale += quantiteTotale + parseInt(commande[i].quantiteProduit);
-  //     console.log(quantiteTotale);
-  //   }
+}
+
+// Modification quantité
+let modificationQuantite = document.querySelector('.itemQuantity');
+modificationQuantite.addEventListener('change', function () {});
+// Suppression produit
+let suppressionProduit = document.querySelector('.deleteItem');
+for (let j = 0; j < suppressionProduit.length; j++) {
+  suppressionProduit[j].addEventListener('click', function () {
+    let produitASupprimer = commande[j].idProduit;
+    console.log(produitASupprimer);
+    commande = commande.filter((el) => el.idProduit !== produitASupprimer);
+    localStorage.setItem('commande', JSON.stringify(panier));
+    console.log(commande);
+  });
 }
