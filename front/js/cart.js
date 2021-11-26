@@ -21,7 +21,8 @@ function displayProducts() {
           displayProduct(
             data,
             commande[i].quantiteProduit,
-            commande[i].couleurProduit
+            commande[i].couleurProduit,
+            i
           );
           console.log(data);
         })
@@ -32,7 +33,7 @@ function displayProducts() {
     }
   }
 }
-function displayProduct(products, quantiteProduit, couleurProduit) {
+function displayProduct(products, quantiteProduit, couleurProduit, i) {
   let product = new Canape(
     products.colors,
     products._id,
@@ -55,7 +56,8 @@ function displayProduct(products, quantiteProduit, couleurProduit) {
                   <div class="cart__item__content__settings">
                     <div class="cart__item__content__settings__quantity">
                       <p>Qté : ${canapeCart.quantite}</p>
-                      <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="42">
+                      <input onchange="modifierProduit('${i}', this.value)" type="number" class="itemQuantity" 
+                      name="itemQuantity" min="1" max="100" value="${canapeCart.quantite}">
                     </div>
                     <div class="cart__item__content__settings__delete">
                       <p onclick="supprimerProduit('${product.id}','${couleurProduit}')" class="deleteItem">Supprimer</p>
@@ -63,6 +65,12 @@ function displayProduct(products, quantiteProduit, couleurProduit) {
                   </div>
                 </div>
               </article>`;
+}
+
+function modifierProduit(i, quantite) {
+  commande[i].quantiteProduit = quantite;
+  localStorage.setItem('commande', JSON.stringify(commande));
+  displayProducts();
 }
 
 function supprimerProduit(nomProduit, couleurProduit) {
@@ -79,16 +87,84 @@ function supprimerProduit(nomProduit, couleurProduit) {
   console.log(nomProduit, couleurProduit);
 }
 
-// Modification quantité
-// let modificationQuantite = document.querySelector('.itemQuantity');
-// modificationQuantite.addEventListener('change', function () {});
-// // Suppression produit
-// let suppressionProduit = document.querySelector('.deleteItem');
-// for (let j = 0; j < suppressionProduit.length; j++) {
-//   suppressionProduit[j].addEventListener('click', function () {
-//     let produitASupprimer = commande[j].idProduit;
-//     console.log(produitASupprimer);
-//     commande = commande.filter((el) => el.idProduit !== produitASupprimer);
-//     localStorage.setItem('commande', JSON.stringify(panier));
-//     console.log(commande);
-//   });
+// FORMULAIRE DE CONTACT //
+let form = document.querySelector('.cart__order__form');
+console.log(form);
+form.firstName.addEventListener('change', function () {
+  validEntry(this);
+});
+form.lastName.addEventListener('change', function () {
+  validEntry(this);
+});
+form.address.addEventListener('change', function () {
+  validEntry(this);
+});
+form.city.addEventListener('change', function () {
+  validEntry(this);
+});
+form.email.addEventListener('change', function () {
+  validEmail(this);
+});
+
+form.addEventListener('submit', function (e) {
+  e.preventDefault;
+  if (
+    validEntry(form.firstName) &&
+    validEntry(form.lastName) &&
+    validEntry(form.address) &&
+    validEntry(form.city) &&
+    validEmail(form.email)
+  ) {
+    form.submit();
+  }
+});
+// *** PRENOM NOM ADRESSE VILLE ***
+const validEntry = function (inputEntry) {
+  let msg;
+  let valid = false;
+  if (!/^[a-z ,.'-]{2,}/.test(inputEntry.value)) {
+    msg = 'Entrée non-valide';
+  } else {
+    msg = 'Entrée valide';
+    valid = 'true';
+  }
+  let small = inputEntry.nextElementSibling;
+  if (valid) {
+    small.innerHTML = 'Donnée valide';
+    small.classList.remove('text-danger');
+    small.classList.add('text-success');
+    return true;
+  } else {
+    small.innerHTML = 'Donnée non-valide';
+    small.classList.remove('text-success');
+    small.classList.add('text-danger');
+    return false;
+  }
+};
+// *** EMAIL ***
+const validEmail = function (inputEmail) {
+  let emailRegExp = new RegExp(
+    '^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$',
+    'g'
+  );
+  let testEmail = emailRegExp.test(inputEmail.value);
+  let small = inputEmail.nextElementSibling;
+  if (testEmail) {
+    small.innerHTML = 'Adresse email valide';
+    small.classList.remove('text-danger');
+    small.classList.add('text-success');
+    return true;
+  } else {
+    small.innerHTML = 'Adresse email non-valide';
+    small.classList.remove('text-success');
+    small.classList.add('text-danger');
+    return false;
+  }
+};
+
+// Alternative suppression produit en changeant ${product.id} par i
+// function supprimerProduit(i) {
+//   commande.splice(i, 1);
+//   localStorage.setItem('commande', JSON.stringify(commande));
+//   displayProducts();
+// }
