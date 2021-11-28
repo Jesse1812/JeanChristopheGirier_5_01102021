@@ -24,7 +24,6 @@ function displayProducts() {
             commande[i].couleurProduit,
             i
           );
-          console.log(data);
         })
         .catch(function (error) {
           console.log('Une erreur est survenue.');
@@ -84,12 +83,17 @@ function supprimerProduit(nomProduit, couleurProduit) {
     localStorage.setItem('commande', JSON.stringify(commande));
     displayProducts();
   }
-  console.log(nomProduit, couleurProduit);
 }
+
+// Alternative suppression produit en changeant ${product.id} par i dans affichagePanier
+// function supprimerProduit(i) {
+//   commande.splice(i, 1);
+//   localStorage.setItem('commande', JSON.stringify(commande));
+//   displayProducts();
+// }
 
 // FORMULAIRE DE CONTACT //
 let form = document.querySelector('.cart__order__form');
-console.log(form);
 form.firstName.addEventListener('change', function () {
   validEntry(this);
 });
@@ -107,22 +111,36 @@ form.email.addEventListener('change', function () {
 });
 
 form.addEventListener('submit', function (e) {
-  e.preventDefault;
+  e.preventDefault();
   if (
     validEntry(form.firstName) &&
     validEntry(form.lastName) &&
-    validEntry(form.address) &&
+    validAdresse(form.address) &&
     validEntry(form.city) &&
     validEmail(form.email)
   ) {
-    form.submit();
+    // ENREGISTREMENT CONTACT //
+    let contact = new Contact(
+      firstName.value,
+      lastName.value,
+      address.value,
+      city.value,
+      email.value
+    );
+    console.log(contact);
+    // RECUPERATION DES ID DES PRODUITS
+    const productIds = [];
+    for (i = 0; i < commande.length; i++) {
+      productIds.push(commande[i]);
+    }
+    console.log(productIds);
   }
 });
-// *** PRENOM NOM ADRESSE VILLE ***
+// *** REGEX PRENOM NOM ADRESSE VILLE ***
 const validEntry = function (inputEntry) {
   let msg;
   let valid = false;
-  if (!/^[a-z ,.'-]{2,}/.test(inputEntry.value)) {
+  if (!/^[a-z ,.'-]+$/i.test(inputEntry.value)) {
     msg = 'Entrée non-valide';
   } else {
     msg = 'Entrée valide';
@@ -141,7 +159,30 @@ const validEntry = function (inputEntry) {
     return false;
   }
 };
-// *** EMAIL ***
+// *** REGEX ADRESSE ***
+const validAdresse = function (inputAdresse) {
+  let msg;
+  let valid = false;
+  if (!/^[a-zA-Z0-9\s,.'-]$/.test(inputAdresse.value)) {
+    msg = 'Entrée non-valide';
+  } else {
+    msg = 'Entrée valide';
+    valid = 'true';
+  }
+  let small = inputAdresse.nextElementSibling;
+  if (valid) {
+    small.innerHTML = 'Adresse valide';
+    small.classList.remove('text-danger');
+    small.classList.add('text-success');
+    return true;
+  } else {
+    small.innerHTML = 'Adresse non-valide';
+    small.classList.remove('text-success');
+    small.classList.add('text-danger');
+    return false;
+  }
+};
+// *** REGEX EMAIL ***
 const validEmail = function (inputEmail) {
   let emailRegExp = new RegExp(
     '^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$',
@@ -161,10 +202,3 @@ const validEmail = function (inputEmail) {
     return false;
   }
 };
-
-// Alternative suppression produit en changeant ${product.id} par i
-// function supprimerProduit(i) {
-//   commande.splice(i, 1);
-//   localStorage.setItem('commande', JSON.stringify(commande));
-//   displayProducts();
-// }
