@@ -42,6 +42,7 @@ function displayProduct(products, quantiteProduit, couleurProduit, i) {
     products.description,
     products.altTxt
   );
+
   let canapeCart = new CanapeCart(quantiteProduit, product);
   affichagePanier.innerHTML += `<article class="cart__item" data-id="${product.id}">
                 <div class="cart__item__img">
@@ -65,6 +66,12 @@ function displayProduct(products, quantiteProduit, couleurProduit, i) {
                 </div>
               </article>`;
 }
+
+// function ajouterPrix(i, price) {
+//   product.price = prix
+//   commande[i].prix = price
+//   displayProducts()
+// }
 
 function modifierProduit(i, quantite) {
   commande[i].quantiteProduit = quantite;
@@ -101,7 +108,7 @@ form.lastName.addEventListener('change', function () {
   validEntry(this);
 });
 form.address.addEventListener('change', function () {
-  validEntry(this);
+  validAdresse(this);
 });
 form.city.addEventListener('change', function () {
   validEntry(this);
@@ -140,7 +147,7 @@ form.addEventListener('submit', function (e) {
 const validEntry = function (inputEntry) {
   let msg;
   let valid = false;
-  if (!/^[a-z ,.'-]+$/i.test(inputEntry.value)) {
+  if (!/^([a-z ,.'-]{2,})+$/i.test(inputEntry.value)) {
     msg = 'Entrée non-valide';
   } else {
     msg = 'Entrée valide';
@@ -158,12 +165,13 @@ const validEntry = function (inputEntry) {
     small.classList.add('text-danger');
     return false;
   }
+  console.log('hello');
 };
 // *** REGEX ADRESSE ***
 const validAdresse = function (inputAdresse) {
   let msg;
   let valid = false;
-  if (!/^[a-zA-Z0-9\s,.'-]$/.test(inputAdresse.value)) {
+  if (!/^([a-zA-Z0-9\s,.'-]{8,})+$/i.test(inputAdresse.value)) {
     msg = 'Entrée non-valide';
   } else {
     msg = 'Entrée valide';
