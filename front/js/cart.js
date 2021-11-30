@@ -1,5 +1,7 @@
 let commande = JSON.parse(localStorage.getItem('commande'));
 let affichagePanier = document.getElementById('cart__items');
+let totalPanier = document.getElementById('totalPrice');
+let quantitePanier = document.getElementById('totalQuantity');
 
 displayProducts();
 
@@ -10,6 +12,8 @@ function displayProducts() {
   <div>"Le panier est vide"</div></article>`;
   } // si panier avec produit
   else {
+    let totalPrice = 0;
+    let totalQuantite = 0;
     affichagePanier.innerHTML = '';
     for (let i = 0; i < commande.length; i++) {
       fetch(`http://localhost:3000/api/products/${commande[i].idProduit}`)
@@ -24,6 +28,10 @@ function displayProducts() {
             commande[i].couleurProduit,
             i
           );
+          totalQuantite += parseInt(data.quantiteProduit);
+          quantitePanier.innerHTML = totalQuantite;
+          totalPrice += parseInt(data.price) * parseInt(data.quantiteProduit);
+          totalPanier.innerHTML = totalPrice;
         })
         .catch(function (error) {
           console.log('Une erreur est survenue.');
@@ -66,12 +74,6 @@ function displayProduct(products, quantiteProduit, couleurProduit, i) {
                 </div>
               </article>`;
 }
-
-// function ajouterPrix(i, price) {
-//   product.price = prix
-//   commande[i].prix = price
-//   displayProducts()
-// }
 
 function modifierProduit(i, quantite) {
   commande[i].quantiteProduit = quantite;
@@ -138,9 +140,29 @@ form.addEventListener('submit', function (e) {
     // RECUPERATION DES ID DES PRODUITS
     const productIds = [];
     for (i = 0; i < commande.length; i++) {
-      productIds.push(commande[i]);
+      productIds.push(commande[i].idProduit);
     }
     console.log(productIds);
+    fetch('http://localhost:3000/api/products/order', {
+      method: 'POST',
+      body: JSON.stringify({
+        contact: contact,
+        products: productIds,
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    })
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        console.log(data);
+      })
+      .catch(function (error) {
+        console.log('Une erreur est survenue.');
+        console.log(error);
+      });
   }
 });
 // *** REGEX PRENOM NOM ADRESSE VILLE ***
