@@ -6,8 +6,10 @@ let quantitePanier = document.getElementById('totalQuantity');
 displayProducts();
 
 function displayProducts() {
-  // si panier est vide
-  if (commande == null) {
+  // si le panier est vide
+  if (commande == null || commande.length === 0) {
+    quantitePanier.innerHTML = '0';
+    totalPanier.innerHTML = '0';
     affichagePanier.innerHTML = `<article class="cart__item">
   <div>"Le panier est vide"</div></article>`;
   } // si panier avec produit
@@ -62,6 +64,7 @@ function displayProduct(products, quantiteProduit, couleurProduit, i) {
                     <p>${product.price} €</p>
                   </div>
                   <div class="cart__item__content__settings">
+                    <p>Couleur: ${couleurProduit}</p>
                     <div class="cart__item__content__settings__quantity">
                       <p>Qté : ${canapeCart.quantite}</p>
                       <input onchange="modifierProduit('${i}', this.value)" type="number" class="itemQuantity" 
@@ -136,13 +139,11 @@ form.addEventListener('submit', function (e) {
       city.value,
       email.value
     );
-    console.log(contact);
     // RECUPERATION DES ID DES PRODUITS
     const productIds = [];
     for (i = 0; i < commande.length; i++) {
       productIds.push(commande[i].idProduit);
     }
-    console.log(productIds);
     fetch('http://localhost:3000/api/products/order', {
       method: 'POST',
       body: JSON.stringify({
@@ -157,7 +158,8 @@ form.addEventListener('submit', function (e) {
         return response.json();
       })
       .then(function (data) {
-        console.log(data);
+        localStorage.removeItem('commande');
+        window.location.href = `http://127.0.0.1:5500/front/html/confirmation.html?orderId=${data.orderId}`;
       })
       .catch(function (error) {
         console.log('Une erreur est survenue.');
@@ -165,11 +167,12 @@ form.addEventListener('submit', function (e) {
       });
   }
 });
+
 // *** REGEX PRENOM NOM ADRESSE VILLE ***
 const validEntry = function (inputEntry) {
   let msg;
   let valid = false;
-  if (!/^([a-z ,.'-]{2,})+$/i.test(inputEntry.value)) {
+  if (!/^([a-z ,.'-éèùà]{2,})+$/i.test(inputEntry.value)) {
     msg = 'Entrée non-valide';
   } else {
     msg = 'Entrée valide';
@@ -187,13 +190,12 @@ const validEntry = function (inputEntry) {
     small.classList.add('text-danger');
     return false;
   }
-  console.log('hello');
 };
 // *** REGEX ADRESSE ***
 const validAdresse = function (inputAdresse) {
   let msg;
   let valid = false;
-  if (!/^([a-zA-Z0-9\s,.'-]{8,})+$/i.test(inputAdresse.value)) {
+  if (!/^([a-zA-Z0-9\s,.'-.éèùà]{8,})+$/i.test(inputAdresse.value)) {
     msg = 'Entrée non-valide';
   } else {
     msg = 'Entrée valide';

@@ -43,8 +43,8 @@ function displayOneProduct(products) {
   if (!panier) {
     panier = [];
   }
-  let choixCouleur = '';
-  let choixQuantite = '';
+  // let choixCouleur = '';
+  // let choixQuantite = '';
   let value = product.colors;
   const color = document.getElementById('colors');
   for (let i = 0; i < product.colors.length; i++) {
@@ -52,26 +52,26 @@ function displayOneProduct(products) {
     <option value="${value[i]}">${value[i]}</option>`;
   }
   // Choix couleur
-  color.addEventListener('change', function () {
-    choixCouleur = color.value;
-  });
+  // color.addEventListener('change', function () {
+  //   choixCouleur = color.value;
+  // });
 
   // Choix quantité
   const quantity = document.getElementById('quantity');
-  quantity.addEventListener('change', function () {
-    choixQuantite = quantity.value;
-  });
+  // quantity.addEventListener('change', function () {
+  //   choixQuantite = quantity.value;
+  // });
 
   const shopping = document.getElementById('addToCart');
   shopping.addEventListener('click', function () {
     let produit = {
       idProduit: productId,
-      couleurProduit: choixCouleur,
-      quantiteProduit: choixQuantite,
+      couleurProduit: color.value,
+      quantiteProduit: quantity.value,
     };
-    console.log('ajout produit');
-    if (choixCouleur && choixQuantite) {
+    if (produit.couleurProduit && produit.quantiteProduit) {
       panier = managePanier(panier, produit);
+      alert("L'article a été ajouté");
       localStorage.setItem('commande', JSON.stringify(panier));
     } else alert('Veuillez choisir une couleur et une quantité');
   });
