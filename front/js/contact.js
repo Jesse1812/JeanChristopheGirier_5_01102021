@@ -1,3 +1,4 @@
+// Constructeur d'objet Contact
 class Contact {
   constructor(firstName, lastName, address, city, email) {
     this.firstName = firstName;

@@ -1,5 +1,6 @@
 // Récupération de l'Id de chaque canapé
 const productId = getArticleId();
+
 function getArticleId() {
   return new URL(location.href).searchParams.get('id');
 }
@@ -25,6 +26,8 @@ function displayOneProduct(products) {
     products.description,
     products.altTxt
   );
+
+  // Affichage produit
   document.getElementsByClassName(
     'item__img'
   )[0].innerHTML = `<img src="${product.imageUrl}" <alt="${product.altTxt}">`;
@@ -38,7 +41,7 @@ function displayOneProduct(products) {
                   ${product.description}
                 </p>`;
 
-  // Affichage options couleurs
+  // Affichage options couleur et quantité
   let panier = JSON.parse(localStorage.getItem('commande'));
   if (!panier) {
     panier = [];
@@ -52,6 +55,7 @@ function displayOneProduct(products) {
     <option value="${value[i]}">${value[i]}</option>`;
   }
 
+  // Validation  choix du produit
   const shopping = document.getElementById('addToCart');
   shopping.addEventListener('click', function () {
     let produit = {
@@ -66,6 +70,7 @@ function displayOneProduct(products) {
     } else alert('Veuillez choisir une couleur et une quantité');
   });
 }
+
 // Cette fonction  a pour but de renvoyer le panier avec le canape,
 // mais si le canape est deja présent elle va ajouter la quantité
 // panier correspond au panier total

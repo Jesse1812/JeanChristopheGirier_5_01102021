@@ -5,6 +5,7 @@ let quantitePanier = document.getElementById('totalQuantity');
 
 displayProducts();
 
+// Préparation du panier: regroupement des produits et calcul des quantités
 function displayProducts() {
   // si le panier est vide
   if (commande == null || commande.length === 0) {
@@ -42,6 +43,8 @@ function displayProducts() {
     }
   }
 }
+
+// Affichage du panier
 function displayProduct(products, quantiteProduit, couleurProduit, i) {
   let product = new Canape(
     products.colors,
@@ -78,6 +81,7 @@ function displayProduct(products, quantiteProduit, couleurProduit, i) {
               </article>`;
 }
 
+// Modification et suppression produit
 function modifierProduit(i, quantite) {
   commande[i].quantiteProduit = quantite;
   localStorage.setItem('commande', JSON.stringify(commande));
@@ -168,7 +172,7 @@ form.addEventListener('submit', function (e) {
   }
 });
 
-// *** REGEX PRENOM NOM ADRESSE VILLE ***
+// *** REGEX PRENOM NOM VILLE ***
 const validEntry = function (inputEntry) {
   let msg;
   let valid = false;
