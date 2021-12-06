@@ -1,7 +1,7 @@
-let commande = JSON.parse(localStorage.getItem('commande'));
-let affichagePanier = document.getElementById('cart__items');
-let totalPanier = document.getElementById('totalPrice');
-let quantitePanier = document.getElementById('totalQuantity');
+const commande = JSON.parse(localStorage.getItem('commande'));
+const affichagePanier = document.getElementById('cart__items');
+const totalPanier = document.getElementById('totalPrice');
+const quantitePanier = document.getElementById('totalQuantity');
 
 displayProducts();
 
