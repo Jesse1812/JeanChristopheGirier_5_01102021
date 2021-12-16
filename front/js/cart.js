@@ -163,7 +163,8 @@ form.addEventListener('submit', function (e) {
       })
       .then(function (data) {
         localStorage.removeItem('commande');
-        window.location.href = `http://127.0.0.1:5500/front/html/confirmation.html?orderId=${data.orderId}`;
+        const baseUrl = window.location.origin;
+        window.location.href = `${baseUrl}/front/html/confirmation.html?orderId=${data.orderId}`;
       })
       .catch(function (error) {
         console.log('Une erreur est survenue.');
